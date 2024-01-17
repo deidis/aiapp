@@ -17,7 +17,10 @@ results_path_prefix = './answers'
 
 def ai(name=None):
     config = AutoConfig(env_path())
-    return AIApp(name, config('OPENAI_API_KEY'))
+    api_key = config('OPENAI_API_KEY')
+    if f"{api_key}_{name}" not in _clients:
+        _clients[f"{api_key}_{name}"] = AIApp(name, api_key)
+    return _clients[f"{api_key}_{name}"]
 
 
 def remove_html_comments(content):
@@ -30,7 +33,7 @@ class AIApp:
 
     def __init__(self, name, api_key):
         self.api_key = api_key
-        _clients[f"{api_key}_{name}"] = OpenAI(api_key=api_key)
+        self.openai = OpenAI(api_key=api_key)
 
         self.name = name
         self.messages = {}
@@ -122,7 +125,7 @@ class AIApp:
             if item['role'] == 'system':
                 self.compiled_system_prompt = item['content']
 
-        completion = _clients[f"{self.api_key}_{self.name}"].chat.completions.create(**params)
+        completion = self.openai.chat.completions.create(**params)
         self.response = completion.choices[0].message.content
 
         basename = os.path.basename(f"{self.name}".strip('.md'))
@@ -302,8 +305,11 @@ END OF FORMATTING RULES SECTION
         self.messages.clear()
         return self
 
+    def result(self):
+        return self.response
+
     def result_show(self):
         return display(Markdown(self.response))
 
-    def result(self):
-        return self.response
+    def result_print(self):
+        print(self.response)
