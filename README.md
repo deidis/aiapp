@@ -33,7 +33,7 @@ The entry point is ```ai()``` function. It returns an instance of ```AIApp``` cl
 The parameter `name` serves these purposes:
 
 1. It's the name of the so called "AI app" which we can later get by the same name
-2. If the name is something like "blabla_<system|user>" then it will try to find the `blabla_system.md` and `blabla_user.md` and use the contents of the file as the respective prompt message (system or user message)
+2. If the name is something like "blabla" then it will try to find the `blabla.md`, blabla_system.md` or `blabla_user.md` and use the contents of the file as the respective prompt message (system or user message - system by default)
 3. Just in case the name coincides with a file name (if a file found) it will be used as a system message
 
 #### Examples
