@@ -1,0 +1,1 @@
+from .aiapp import AIApp, ai

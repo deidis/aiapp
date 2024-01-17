@@ -2,9 +2,11 @@ import os
 import re
 import json
 
-from decouple import config
+from decouple import Config, AutoConfig
 from openai import OpenAI
 from IPython.display import display, Markdown
+
+from find_env import env_path
 
 _clients = {}
 
@@ -14,7 +16,8 @@ results_path_prefix = './answers'
 
 
 def ai(name=None):
-    return AIapp(name, config("OPENAI_API_KEY"))
+    config = AutoConfig(env_path())
+    return AIApp(name, config('OPENAI_API_KEY'))
 
 
 def remove_html_comments(content):
