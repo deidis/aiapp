@@ -131,13 +131,13 @@ This will prepend a section to the system prompt about a variable named `name` w
 
 ```python
 ai("step1").system("Act as a polyglot").user("Say 'hi' in Lithuanian").gpt4()
-aiStep2 = ai("step2").system("Use the RESULT1 and translate it to French").var("RESULT1", ai("step1").result()).gpt4turbo()
+step2 = ai("step2").system("Use the RESULT1 and translate it to French").var("RESULT1", ai("step1").result()).gpt4turbo()
 
 # Now let's see what we were actually doing in step2
-print(aiStep2.system_compiled())
+print(step2.system_compiled())
 
 # And finally print the result
-aiStep2.result_print()
+step2.result_print()
 ```
 
 ### example_json(value), json_schema(value)
